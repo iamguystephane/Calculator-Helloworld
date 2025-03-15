@@ -3,6 +3,25 @@ import { View, Text, TouchableOpacity, StyleSheet } from "react-native";
 import { StatusBar } from "expo-status-bar";
 
 export default function Calculator() {
+
+    const [input, setInput] = useState("");
+    const [result, setResult] = useState("");
+
+    const handlePress = (value) => {
+      if (value === "=") {
+        try {
+          setResult(eval(input).toString());
+        } catch (error) {
+          setResult("Error");
+        }
+      } else if (value === "C") {
+        setInput("");
+        setResult("");
+      } else {
+        setInput(input + value);
+      }
+    };
+
   return (
     <View style={styles.container}>
       <StatusBar style="auto" />
@@ -31,6 +50,12 @@ export default function Calculator() {
     </View>
   );
 }
+
+const Button = ({ label, onPress }) => (
+  <TouchableOpacity style={styles.button} onPress={onPress}>
+    <Text style={styles.buttonText}>{label}</Text>
+  </TouchableOpacity>
+);
 
 const styles = StyleSheet.create({
   container: {
