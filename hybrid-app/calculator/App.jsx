@@ -2,17 +2,30 @@ import React, {useState} from 'react';
 import {View, Text, TextInput, Button, StyleSheet} from 'react-native';
 
 const Calculator = () => {
+  const [input, setInput] = useState('');
+  const [output, setOutput] = useState('');
+
+  const handlePress = value => {
+    setInput(input + value);
+  };
+
+  const handleClear = () => {
+    setInput('');
+    setOutput('');
+  };
+
+  const handleCalculate = () => {
+    try {
+      setOutput(eval(input).toString());
+    } catch (e) {
+      setOutput('Error');
+    }
+  };
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Simple Calculator</Text>
-
-      {/* Input field */}
       <TextInput style={styles.input} value={input} editable={false} />
-
-      {/* Output field */}
       <Text style={styles.output}>{output}</Text>
-
-      {/* Calculator buttons */}
       <View style={styles.buttonsContainer}>
         <View style={styles.row}>
           <Button title="1" onPress={() => handlePress('1')} />
