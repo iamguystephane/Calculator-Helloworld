@@ -1,131 +1,105 @@
-/**
- * Sample React Native App
- * https://github.com/facebook/react-native
- *
- * @format
- */
+import React, { useState } from 'react';
+import { View, Text, TextInput, Button, StyleSheet } from 'react-native';
 
-import React from 'react';
-import type {PropsWithChildren} from 'react';
-import {
-  ScrollView,
-  StatusBar,
-  StyleSheet,
-  Text,
-  useColorScheme,
-  View,
-} from 'react-native';
+const Calculator = () => {
+  const [input, setInput] = useState('');
+  const [output, setOutput] = useState('');
 
-import {
-  Colors,
-  DebugInstructions,
-  Header,
-  LearnMoreLinks,
-  ReloadInstructions,
-} from 'react-native/Libraries/NewAppScreen';
-
-type SectionProps = PropsWithChildren<{
-  title: string;
-}>;
-
-function Section({children, title}: SectionProps): React.JSX.Element {
-  const isDarkMode = useColorScheme() === 'dark';
-  return (
-    <View style={styles.sectionContainer}>
-      <Text
-        style={[
-          styles.sectionTitle,
-          {
-            color: isDarkMode ? Colors.white : Colors.black,
-          },
-        ]}>
-        {title}
-      </Text>
-      <Text
-        style={[
-          styles.sectionDescription,
-          {
-            color: isDarkMode ? Colors.light : Colors.dark,
-          },
-        ]}>
-        {children}
-      </Text>
-    </View>
-  );
-}
-
-function App(): React.JSX.Element {
-  const isDarkMode = useColorScheme() === 'dark';
-
-  const backgroundStyle = {
-    backgroundColor: isDarkMode ? Colors.darker : Colors.lighter,
+  const handlePress = (value) => {
+    setInput(input + value);
   };
 
-  /*
-   * To keep the template simple and small we're adding padding to prevent view
-   * from rendering under the System UI.
-   * For bigger apps the reccomendation is to use `react-native-safe-area-context`:
-   * https://github.com/AppAndFlow/react-native-safe-area-context
-   *
-   * You can read more about it here:
-   * https://github.com/react-native-community/discussions-and-proposals/discussions/827
-   */
-  const safePadding = '5%';
+  const handleClear = () => {
+    setInput('');
+    setOutput('');
+  };
+
+  const handleCalculate = () => {
+    try {
+      setOutput(eval(input).toString());
+    } catch (e) {
+      setOutput('Error');
+    }
+  };
 
   return (
-    <View style={backgroundStyle}>
-      <StatusBar
-        barStyle={isDarkMode ? 'light-content' : 'dark-content'}
-        backgroundColor={backgroundStyle.backgroundColor}
+    <View style={styles.container}>
+      <Text style={styles.title}>Simple Calculator</Text>
+
+      {/* Input field */}
+      <TextInput
+        style={styles.input}
+        value={input}
+        editable={false}
       />
-      <ScrollView
-        style={backgroundStyle}>
-        <View style={{paddingRight: safePadding}}>
-          <Header/>
+      
+      {/* Output field */}
+      <Text style={styles.output}>{output}</Text>
+
+      {/* Calculator buttons */}
+      <View style={styles.buttonsContainer}>
+        <View style={styles.row}>
+          <Button title="1" onPress={() => handlePress('1')} />
+          <Button title="2" onPress={() => handlePress('2')} />
+          <Button title="3" onPress={() => handlePress('3')} />
+          <Button title="/" onPress={() => handlePress('/')} />
         </View>
-        <View
-          style={{
-            backgroundColor: isDarkMode ? Colors.black : Colors.white,
-            paddingHorizontal: safePadding,
-            paddingBottom: safePadding,
-          }}>
-          <Section title="Step One">
-            Edit <Text style={styles.highlight}>App.tsx</Text> to change this
-            screen and then come back to see your edits.
-          </Section>
-          <Section title="See Your Changes">
-            <ReloadInstructions />
-          </Section>
-          <Section title="Debug">
-            <DebugInstructions />
-          </Section>
-          <Section title="Learn More">
-            Read the docs to discover what to do next:
-          </Section>
-          <LearnMoreLinks />
+        <View style={styles.row}>
+          <Button title="4" onPress={() => handlePress('4')} />
+          <Button title="5" onPress={() => handlePress('5')} />
+          <Button title="6" onPress={() => handlePress('6')} />
+          <Button title="*" onPress={() => handlePress('*')} />
         </View>
-      </ScrollView>
+        <View style={styles.row}>
+          <Button title="7" onPress={() => handlePress('7')} />
+          <Button title="8" onPress={() => handlePress('8')} />
+          <Button title="9" onPress={() => handlePress('9')} />
+          <Button title="-" onPress={() => handlePress('-')} />
+        </View>
+        <View style={styles.row}>
+          <Button title="C" onPress={handleClear} />
+          <Button title="0" onPress={() => handlePress('0')} />
+          <Button title="=" onPress={handleCalculate} />
+          <Button title="+" onPress={() => handlePress('+')} />
+        </View>
+      </View>
     </View>
   );
-}
+};
 
 const styles = StyleSheet.create({
-  sectionContainer: {
-    marginTop: 32,
-    paddingHorizontal: 24,
+  container: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    padding: 20,
   },
-  sectionTitle: {
+  title: {
     fontSize: 24,
-    fontWeight: '600',
+    marginBottom: 20,
   },
-  sectionDescription: {
-    marginTop: 8,
-    fontSize: 18,
-    fontWeight: '400',
+  input: {
+    height: 50,
+    width: '100%',
+    borderColor: '#000',
+    borderWidth: 1,
+    paddingLeft: 10,
+    fontSize: 20,
+    marginBottom: 20,
   },
-  highlight: {
-    fontWeight: '700',
+  output: {
+    fontSize: 30,
+    marginBottom: 20,
+    color: 'blue',
+  },
+  buttonsContainer: {
+    width: '100%',
+  },
+  row: {
+    flexDirection: 'row',
+    justifyContent: 'space-around',
+    marginBottom: 10,
   },
 });
 
-export default App;
+export default Calculator;
